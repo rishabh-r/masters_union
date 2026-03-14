@@ -5,20 +5,25 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#f0f4ff',
-          100: '#e0eaff',
+          50: '#eef2ff',
+          100: '#e0e7ff',
+          200: '#c7d2fe',
+          300: '#a5b4fc',
+          400: '#818cf8',
           500: '#4f6ef7',
           600: '#3b5bdb',
           700: '#2f4ac4',
+          800: '#1e3a8a',
           900: '#1a2a6c',
         },
-        dark: '#0f1117',
-        card: '#1a1d27',
-        surface: '#22263a',
-        border: '#2a2d3a',
+        surface: '#ffffff',
+        card: '#ffffff',
+        muted: '#f8faff',
+        border: '#e0e7ff',
+        ink: '#0f172a',
+        sub: '#64748b',
       },
     },
   },
   plugins: [],
 }
-
