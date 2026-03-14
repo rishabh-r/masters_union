@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { BarChart3, ChevronLeft, TrendingUp, AlertTriangle, CheckCircle, XCircle, MinusCircle, ArrowRight, RefreshCw, Download } from 'lucide-react'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { BarChart3, ChevronLeft, TrendingUp, AlertTriangle, CheckCircle, XCircle, MinusCircle, ArrowRight, RefreshCw, Download, X, Phone, Mail, Building2 } from 'lucide-react'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer } from 'recharts'
 
 const channelMeta = {
   'Quick Commerce (Blinkit/Zepto)': { color: '#f97316', bg: 'from-orange-400 to-red-500', emoji: '⚡' },
@@ -29,6 +30,157 @@ const scoreEmoji = s => s >= 70 ? '🚀' : s >= 50 ? '⚠️' : '🔴'
 
 const fadeUp = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0 } }
 const stagger = { show: { transition: { staggerChildren: 0.1 } } }
+
+function GINModal({ open, onClose, product }) {
+  const [submitted, setSubmitted] = useState(false)
+  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '' })
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setSubmitted(true)
+  }
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(8px)' }}
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 30 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            {!submitted ? (
+              <>
+                {/* Modal Header */}
+                <div className="bg-gradient-to-br from-brand-500 via-purple-600 to-pink-600 p-6 text-white relative overflow-hidden">
+                  <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+                  <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors">
+                    <X className="w-5 h-5" />
+                  </button>
+                  <div className="relative">
+                    <div className="text-4xl mb-2">🔬</div>
+                    <h2 className="text-2xl font-black mb-1">Ground Intelligence Test</h2>
+                    <p className="text-white/80 text-sm">Real consumers. Real insights. 10 days.</p>
+                  </div>
+                </div>
+
+                {/* What you get */}
+                <div className="px-6 pt-5 pb-2">
+                  <div className="grid grid-cols-2 gap-3 mb-5">
+                    {[
+                      { emoji: '👥', title: '300–500 Consumers', sub: 'Precisely matched to your demographic' },
+                      { emoji: '⚡', title: '10 Days', sub: 'vs 90 days with traditional firms' },
+                      { emoji: '💰', title: '₹2–5 Lakh', sub: 'vs ₹20–50L with Nielsen/Kantar' },
+                      { emoji: '📊', title: 'Full Report', sub: 'Purchase intent, price sensitivity, feedback' },
+                    ].map(item => (
+                      <div key={item.title} className="bg-gradient-to-br from-brand-50 to-purple-50 border border-brand-100 rounded-2xl p-3">
+                        <div className="text-2xl mb-1">{item.emoji}</div>
+                        <div className="text-xs font-bold text-ink">{item.title}</div>
+                        <div className="text-xs text-sub">{item.sub}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <form onSubmit={handleSubmit} className="space-y-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-xs font-bold text-ink mb-1 block">Your Name *</label>
+                        <input
+                          required value={form.name} onChange={e => set('name', e.target.value)}
+                          placeholder="Rahul Mehta"
+                          className="w-full bg-muted border-2 border-border rounded-xl px-3 py-2.5 text-sm text-ink placeholder-slate-400 focus:outline-none focus:border-brand-400 transition-colors"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-ink mb-1 block">Brand Name *</label>
+                        <input
+                          required value={form.company} onChange={e => set('company', e.target.value)}
+                          placeholder={product?.brandName || 'Your Brand'}
+                          className="w-full bg-muted border-2 border-border rounded-xl px-3 py-2.5 text-sm text-ink placeholder-slate-400 focus:outline-none focus:border-brand-400 transition-colors"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-ink mb-1 block">Email *</label>
+                      <input
+                        required type="email" value={form.email} onChange={e => set('email', e.target.value)}
+                        placeholder="rahul@yourbrand.com"
+                        className="w-full bg-muted border-2 border-border rounded-xl px-3 py-2.5 text-sm text-ink placeholder-slate-400 focus:outline-none focus:border-brand-400 transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-ink mb-1 block">Phone</label>
+                      <input
+                        value={form.phone} onChange={e => set('phone', e.target.value)}
+                        placeholder="+91 98765 43210"
+                        className="w-full bg-muted border-2 border-border rounded-xl px-3 py-2.5 text-sm text-ink placeholder-slate-400 focus:outline-none focus:border-brand-400 transition-colors"
+                      />
+                    </div>
+                    <motion.button
+                      type="submit"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full bg-gradient-to-r from-brand-500 to-purple-600 text-white py-3.5 rounded-2xl font-bold text-base shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2 mt-2"
+                    >
+                      Request My Ground Test <ArrowRight className="w-4 h-4" />
+                    </motion.button>
+                    <p className="text-xs text-sub text-center pb-2">Our team will reach out within 24 hours</p>
+                  </form>
+                </div>
+              </>
+            ) : (
+              /* Success State */
+              <div className="p-10 text-center">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, delay: 0.1 }}
+                  className="text-7xl mb-4"
+                >
+                  🎉
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+                  <h2 className="text-2xl font-black text-ink mb-2">Request Received!</h2>
+                  <p className="text-sub mb-2">
+                    Hey <strong>{form.name}</strong>, we've received your request for <strong>{form.company || product?.brandName}</strong>.
+                  </p>
+                  <p className="text-sub text-sm mb-6">Our team will reach out at <strong>{form.email}</strong> within 24 hours to design your consumer test.</p>
+                  <div className="bg-gradient-to-br from-brand-50 to-purple-50 border border-brand-100 rounded-2xl p-4 text-sm mb-6 text-left">
+                    <div className="font-bold text-ink mb-2">What happens next:</div>
+                    {['Kick-off call to finalise demographic profile', 'Field agents deployed in target cities', 'Consumer test conducted in 7–10 days', 'Full insight report delivered'].map((s, i) => (
+                      <div key={s} className="flex items-center gap-2 py-1">
+                        <div className="w-5 h-5 rounded-full bg-brand-500 text-white text-xs flex items-center justify-center font-bold">{i+1}</div>
+                        <span className="text-sub">{s}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    onClick={onClose}
+                    className="bg-gradient-to-r from-brand-500 to-purple-600 text-white px-8 py-3 rounded-2xl font-bold"
+                  >
+                    Done
+                  </motion.button>
+                </motion.div>
+              </div>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
 
 function ScoreRing({ score }) {
   const radius = 60
@@ -85,6 +237,7 @@ export default function Dashboard() {
     )
   }
 
+  const [ginOpen, setGinOpen] = useState(false)
   const { analysis, comparables } = state.result
   const { product } = state
   const score = analysis.successScore || 0
@@ -104,6 +257,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <GINModal open={ginOpen} onClose={() => setGinOpen(false)} product={product} />
       {/* Blobs */}
       <div className="fixed top-0 left-0 w-96 h-96 bg-brand-200/20 rounded-full blur-3xl blob pointer-events-none -z-0" />
       <div className="fixed bottom-0 right-0 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl blob2 pointer-events-none -z-0" />
@@ -413,7 +567,8 @@ export default function Dashboard() {
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
-                className="bg-white text-brand-600 px-8 py-3.5 rounded-2xl font-black text-base flex items-center gap-2 justify-center shadow-xl"
+                onClick={() => setGinOpen(true)}
+              className="bg-white text-brand-600 px-8 py-3.5 rounded-2xl font-black text-base flex items-center gap-2 justify-center shadow-xl"
               >
                 Request Ground Intelligence Test <ArrowRight className="w-5 h-5" />
               </motion.button>
