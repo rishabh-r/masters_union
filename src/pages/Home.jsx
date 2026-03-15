@@ -69,7 +69,7 @@ export default function Home() {
             </div>
             <div>
               <span className="font-black text-xl text-ink tracking-tight">Rescale</span>
-              <span className="hidden sm:inline text-xs text-sub ml-2 italic">Unlearn. Remeasure. Rescale.</span>
+              <span className="hidden sm:inline text-xs text-sub ml-2 italic">Stop Scaling Blind.</span>
             </div>
           </div>
           <motion.button
@@ -100,8 +100,8 @@ export default function Home() {
           </motion.div>
 
           <motion.h1 variants={fadeUp} className="text-6xl md:text-8xl font-black tracking-tight leading-[0.9] mb-6">
-            Stop Scaling{' '}
-            <span className="gradient-text block">Blind.</span>
+            Unlearn. Remeasure.{' '}
+            <span className="gradient-text block">Rescale.</span>
           </motion.h1>
 
           <motion.p variants={fadeUp} className="text-xl md:text-2xl text-sub max-w-2xl mx-auto mb-10 leading-relaxed font-light">
